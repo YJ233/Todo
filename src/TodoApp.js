@@ -6,7 +6,7 @@ function TodoApp() {
     return (
         <div>
             <Todos />
-            
+            <Filter />
         </div>
     )
 }

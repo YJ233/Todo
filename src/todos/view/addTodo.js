@@ -1,36 +1,43 @@
-import React,{Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+
+import { addTodo } from '../actions'
 
 
+class AddTodo extends Component {
+    constructor(props, context) {
+        super(props, context)
 
-class AddTodo extends Component{
-    constructor(props,context){
-        super(props,context)
+        this.onSubmit = this.onSubmit.bind(this)
+        this.onInputChange = this.onInputChange.bind(this)
 
-        this.onSubmit=this.onSubmit.bind(this)
-        this.refInput=this.refInput.bind(this)
+        this.state={
+            value: ''
+        }
     }
-
-    onSubmit(e){
+    onSubmit(e) {
         e.preventDefault()
 
-        const input =this.input
-        if (!input.value.trim()) {
+        const inputValue = this.state.value
+        if (!inputValue.trim()) {
             return
         }
-        this.props.onAdd(input.value)
-        input.value=''
+        this.props.onAdd(inputValue)
+        this.setState({ value: '' })
     }
 
-    refInput(node){
-        this.input=node
+    onInputChange(e) {
+        this.setState({
+            value: e.target.value
+        })
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div className="add-todo">
                 <form onSubmit={this.onSubmit}>
-                    <input className="new-todo" ref={this.refInput} />
+                    <input className="new-todo" onChange={this.onInputChange} value={this.state.value} />
                     <button className="add-btn" type="submit">
                         添加
                     </button>
@@ -40,5 +47,16 @@ class AddTodo extends Component{
     }
 }
 
+AddTodo.PropTypes = {
+    onAdd: PropTypes.func.isRequired
+}
 
-export default AddTodo
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onAdd: (text) => {
+            dispatch(addTodo(text))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(AddTodo)
