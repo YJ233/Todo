@@ -38,8 +38,7 @@ const chooseTodos = (todos, filter) => {
         case FilterTypes.UNCOMPLETED:
             return todos.filter(item => !item.completed)
         default:
-            // throw new Error('出线未知的选择器')
-            return todos
+            throw new Error('出线未知的选择器')
     }
 }
 
